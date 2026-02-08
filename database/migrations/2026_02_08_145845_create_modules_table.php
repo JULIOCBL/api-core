@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('modules', function (Blueprint $table) {
+            $table->id();
+            $table->char('key', 255)->nullable();
+            $table->unsignedBigInteger('company_id');
+            $table->boolean('status')->default(true);
+            $table->boolean('view')->default(true);
+            $table->softDeletes();
+            $table->index('deleted_at');
+            $table->index('key');
+            $table->index('view');
+            $table->index('status');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('modules');
+    }
+};
