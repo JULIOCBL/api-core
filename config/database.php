@@ -63,7 +63,7 @@ return [
             ]) : [],
         ],
 
-        'mariadb' => [
+       'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -77,11 +77,45 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'modes' => [
+                'STRICT_TRANS_TABLES', //En modo estricto, asegura que las transacciones fallidas se traten correctamente.
+                'NO_ZERO_IN_DATE', //Previene la inserción de fechas inválidas
+                'NO_ZERO_DATE', //Previene la inserción de fechas inválidas
+                'ERROR_FOR_DIVISION_BY_ZERO', //Lanza un error si se intenta dividir por cero.
+                'NO_ENGINE_SUBSTITUTION' //Previene que MySQL reemplace un motor de almacenamiento desconocido con el motor predeterminado.
+            ],
+            'engine' => 'InnoDB',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_CA : \PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        'logs' => [
+            'driver' => 'mariadb',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'logs'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'modes' => [
+                'STRICT_TRANS_TABLES', //En modo estricto, asegura que las transacciones fallidas se traten correctamente.
+                'NO_ZERO_IN_DATE', //Previene la inserción de fechas inválidas
+                'NO_ZERO_DATE', //Previene la inserción de fechas inválidas
+                'ERROR_FOR_DIVISION_BY_ZERO', //Lanza un error si se intenta dividir por cero.
+                'NO_ENGINE_SUBSTITUTION' //Previene que MySQL reemplace un motor de almacenamiento desconocido con el motor predeterminado.
+            ],
+            'engine' => 'InnoDB',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
 
         'pgsql' => [
             'driver' => 'pgsql',
