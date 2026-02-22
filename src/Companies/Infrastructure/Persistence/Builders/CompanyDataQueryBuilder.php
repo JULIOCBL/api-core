@@ -16,6 +16,7 @@ class CompanyDataQueryBuilder
     {
         $query = $this->buildBaseQuery();
         $this->applyFilters($query, $filters);
+        $this->applySorting($query, $filters);
 
         if ($per_page === -1) {
             $total = (int) (clone $query)->count();
@@ -66,5 +67,22 @@ class CompanyDataQueryBuilder
         $this->applyLikeFilters($query, $filters, $like_filters);
         $this->applyRangeFilters($query, $filters, $range_filters);
         $this->applySearchFilter($query, $filters, 'search', $search_columns);
+    }
+
+    private function applySorting(Builder $query, array $filters): void
+    {
+        $sort_columns = [
+            'id' => 'id',
+            'name' => 'name',
+            'commercial_name' => 'commercial_name',
+            'company_name' => 'commercial_name',
+            'bussiness_name' => 'bussiness_name',
+            'rfc' => 'rfc',
+            'email' => 'email',
+            'status' => 'status',
+            'created_at' => 'created_at',
+        ];
+
+        $this->applySortFilters($query, $filters, $sort_columns, 'id', 'asc');
     }
 }

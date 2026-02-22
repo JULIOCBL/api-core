@@ -75,19 +75,23 @@
           ]
         },
         {
-          "name": "Paginate Companies - 200",
+          "name": "Paginate Companies - 200 (Multi-order alias)",
           "request": {
             "method": "GET",
             "header": [
               { "key": "Accept", "value": "application/json", "type": "text" }
             ],
             "url": {
-              "raw": "{{base_url}}/api/v1/companies?page=1&per_page=15",
+              "raw": "{{base_url}}/api/v1/companies?page=1&per_page=15&orders[0][column]=company_name&orders[0][direction]=asc&orders[1][column]=status&orders[1][direction]=desc",
               "host": ["{{base_url}}"],
               "path": ["api", "v1", "companies"],
               "query": [
                 { "key": "page", "value": "1" },
-                { "key": "per_page", "value": "15" }
+                { "key": "per_page", "value": "15" },
+                { "key": "orders[0][column]", "value": "company_name" },
+                { "key": "orders[0][direction]", "value": "asc" },
+                { "key": "orders[1][column]", "value": "status" },
+                { "key": "orders[1][direction]", "value": "desc" }
               ]
             }
           },
@@ -104,6 +108,38 @@
                   "  pm.expect(body).to.have.property('links');",
                   "  pm.expect(body).to.have.property('meta');",
                   "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Paginate Companies - 200 (all records per_page=-1)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies?per_page=-1&orders[0][column]=id&orders[0][direction]=asc",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies"],
+              "query": [
+                { "key": "per_page", "value": "-1" },
+                { "key": "orders[0][column]", "value": "id" },
+                { "key": "orders[0][direction]", "value": "asc" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var body = pm.response.json();",
+                  "pm.test('All records shape', function () { pm.expect(body).to.have.property('data'); pm.expect(body).to.have.property('meta'); });"
                 ]
               }
             }

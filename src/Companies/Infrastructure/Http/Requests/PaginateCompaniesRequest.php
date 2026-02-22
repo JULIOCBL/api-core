@@ -19,6 +19,9 @@ class PaginateCompaniesRequest extends FormRequest
         return [
             'page' => ['sometimes', 'integer', 'min:1'],
             'per_page' => ['sometimes', 'integer', 'min:-1', 'max:100', 'not_in:0'],
+            'orders' => ['sometimes', 'array'],
+            'orders.*.column' => ['required_with:orders', 'string', 'max:100'],
+            'orders.*.direction' => ['required_with:orders', 'string', 'in:asc,desc'],
             'id' => ['sometimes', 'integer', 'min:1'],
             'status' => ['sometimes', 'boolean'],
             'name' => ['sometimes', 'string', 'max:255'],
