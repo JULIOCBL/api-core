@@ -1,25 +1,37 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Support\Utils;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Support\Facades\Crypt;
+use RuntimeException;
+use stdClass;
 
 class Token
 {
 
-    public static function encode($data)
+    public static function encode(array $data): string
     {
         $private_key = file_get_contents(storage_path('app/private/keys/private.key'));
+        if ($private_key === false) {
+            throw new RuntimeException('Unable to read private key.');
+        }
+
         $token = JWT::encode($data, $private_key, 'RS256');
-        return  Crypt::encrypt($token);
+
+        return Crypt::encrypt($token);
     }
 
-    public static function decode($data)
+    public static function decode(string $data): stdClass
     {
         $data = Crypt::decrypt($data);
         $public_key = file_get_contents(storage_path('app/private/keys/public.key'));
+        if ($public_key === false) {
+            throw new RuntimeException('Unable to read public key.');
+        }
+
         return JWT::decode($data, new Key($public_key, 'RS256'));
     }
 }

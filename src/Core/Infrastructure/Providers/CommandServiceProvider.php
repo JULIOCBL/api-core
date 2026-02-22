@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -10,7 +11,7 @@ class CommandServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
-    public function register(): void
+    public function register()
     {
         //
     }
@@ -18,7 +19,7 @@ class CommandServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(): void
+    public function boot()
     {
          if ($this->app->runningInConsole()) {
             $this->commands([

@@ -1,9 +1,11 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Src\Companies\Infrastructure\Console\Commands\CreateCompaniesBatch;
 use Src\Core\Infrastructure\Console\Commands\GenerateKeyPair;
 
 class Kernel extends ConsoleKernel
@@ -14,6 +16,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        CreateCompaniesBatch::class,
         GenerateKeyPair::class,
     ];
 

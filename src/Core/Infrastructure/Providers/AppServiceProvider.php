@@ -1,25 +1,28 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Providers;
 
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Src\Companies\Domain\Contracts\CompanyRepositoryInterface;
+use Src\Companies\Infrastructure\Persistence\EloquentCompanyRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
+    public function register()
     {
-        //
+        $this->app->bind(CompanyRepositoryInterface::class, EloquentCompanyRepository::class);
     }
 
     /**
      * Bootstrap any application services.
      */
-     public function boot()
+    public function boot()
     {
         if ($this->app->runningInConsole() && $this->isMigratingOrSeeding()) {
             // Cambia las credenciales para la base de datos principal
@@ -37,17 +40,17 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    protected function isMigratingOrSeeding()
+    protected function isMigratingOrSeeding(): bool
     {
         $commands = ['migrate',/*  'db:seed', */ 'migrate:rollback', 'migrate:refresh'];
 
         // Verifica si $_SERVER['argv'] es un array antes de usarlo
-        $currentCommand = $this->app->runningInConsole() && isset($_SERVER['argv']) && is_array($_SERVER['argv'])
+        $current_command = $this->app->runningInConsole() && isset($_SERVER['argv']) && is_array($_SERVER['argv'])
             ? trim(implode(' ', $_SERVER['argv']))
             : '';
 
         foreach ($commands as $command) {
-            if (strpos($currentCommand, $command) !== false) {
+            if (strpos($current_command, $command) !== false) {
                 return true;
             }
         }

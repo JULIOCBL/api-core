@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Traits;
 
 use Illuminate\Contracts\Validation\Validator;
@@ -8,7 +9,7 @@ use Illuminate\Http\Response;
 
 trait HandlesFailedValidation
 {
-    protected function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator): void
     {
         $errors = $validator->errors();
         $first_message = $errors->first();

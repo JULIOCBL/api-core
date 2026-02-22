@@ -1,10 +1,12 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Exceptions;
 
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use RuntimeException;
+use Throwable;
 
 /**
  * Clase personalizada para manejar excepciones estructuradas en formato JSON.
@@ -12,7 +14,7 @@ use Illuminate\Support\Str;
  * código HTTP, código interno y fuente del error, facilitando el manejo uniforme
  * de errores en APIs.
  */
-class JsonException extends Exception
+class JsonException extends RuntimeException
 {
     /**
      * @param string $type Tipo de error (ej. LogLevel::WARNING).
@@ -24,15 +26,15 @@ class JsonException extends Exception
      * @param Exception|null $previous Excepción previa para chaining.
      */
     public function __construct(
-        protected $type,
-        protected $title,
-        protected $message,
-        protected $code = 0,
-        protected $source = "",
-        protected $error_code = 1000,
-        ?Exception $previous = null
+        protected string $type,
+        protected string $title,
+        string $message,
+        int $code = 0,
+        protected string $source = '',
+        protected int $error_code = 1000,
+        ?Throwable $previous = null
     ) {
-        parent::__construct($this->message, $this->code, $previous);
+        parent::__construct($message, $code, $previous);
     }
 
     /**
@@ -90,14 +92,14 @@ class JsonException extends Exception
      *
      * @return mixed
      */
-    public function getException()
+    public function getException(): Request
     {
         $array = [
             'ip' => true,
             'report' => true,
             'title' => Str::ascii($this->getTitle()),
             'detail' => Str::ascii($this->getDetail()),
-            'code' => Str::ascii($this->getErrorCode()),
+            'code' => (string) $this->getErrorCode(),
         ];
 
         if (!empty($this->getSource())) {

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Http\Middleware;
 
 use Illuminate\Http\Middleware\TrustProxies as Middleware;

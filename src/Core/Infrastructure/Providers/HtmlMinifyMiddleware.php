@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Providers;
 
 use Closure;
@@ -22,17 +23,17 @@ class HtmlMinifyMiddleware
             $response->headers->has('Content-Type') &&
             str_contains($response->headers->get('Content-Type'), 'text/html')
         ) {
-            $htmlMin = new HtmlMin();
+            $html_min = new HtmlMin();
 
             // Opcional: configura según tus necesidades
-            $htmlMin->doOptimizeAttributes(true);
-            $htmlMin->doRemoveComments(true);
-            $htmlMin->doSumUpWhitespace(true);
-            $htmlMin->doRemoveWhitespaceAroundTags(true);
-            $htmlMin->doOptimizeViaHtmlDomParser(true);
-            $htmlMin->doRemoveOmittedHtmlTags(true);
+            $html_min->doOptimizeAttributes(true);
+            $html_min->doRemoveComments(true);
+            $html_min->doSumUpWhitespace(true);
+            $html_min->doRemoveWhitespaceAroundTags(true);
+            $html_min->doOptimizeViaHtmlDomParser(true);
+            $html_min->doRemoveOmittedHtmlTags(true);
 
-            $minified = $htmlMin->minify($response->getContent());
+            $minified = $html_min->minify($response->getContent());
             $response->setContent($minified);
         }
 

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Support\Utils;
 
 use Closure;
@@ -49,7 +50,7 @@ class CacheWithIndex
     protected function addToIndex(string $cache_key): void
     {
         $keys = Cache::get($this->index_key, []);
-        if (!in_array($cache_key, $keys)) {
+        if (!in_array($cache_key, $keys, true)) {
             $keys[] = $cache_key;
             Cache::forever($this->index_key, $keys);
         }
@@ -95,7 +96,9 @@ class CacheWithIndex
      */
     protected function shouldDeleteKey(string $key, ?string $match): bool
     {
-        if ($match === null) return true;
+        if ($match === null) {
+            return true;
+        }
 
         $is_prefix = str_ends_with($match, '*');
         $term = $is_prefix ? rtrim($match, '*') : $match;

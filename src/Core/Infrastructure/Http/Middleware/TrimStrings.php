@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TrimStrings as Middleware;

@@ -1,0 +1,210 @@
+{
+  "info": {
+    "_postman_id": "a6f8dcd8-f18d-4b74-aa53-fd4b5f0e7265",
+    "name": "API Core - Companies",
+    "description": "Coleccion para documentar y probar endpoints de Companies.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Companies",
+      "item": [
+        {
+          "name": "Create Company - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Go Flores SA\",\n  \"commercial_name\": \"Go Flores\",\n  \"bussiness_name\": \"Go Flores SA de CV\",\n  \"rfc\": \"XAXX010101000\",\n  \"contact_phone\": \"9991234567\",\n  \"email\": \"contacto@goflores.com\",\n  \"primary_color\": \"#0A84FF\",\n  \"secondary_color\": \"#111111\",\n  \"tertiary_color\": \"#FFFFFF\",\n  \"image_logo\": \"https://cdn.example.com/logo.png\",\n  \"status\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                  "var body = pm.response.json();",
+                  "pm.test('Response has data', function () { pm.expect(body).to.have.property('data'); });",
+                  "pm.test('Response has message object', function () { pm.expect(body).to.have.property('message'); pm.expect(body.message).to.have.property('title'); pm.expect(body.message).to.have.property('description'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Company - 422 Validation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rfc\": \"XAXX010101000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 422', function () { pm.response.to.have.status(422); });",
+                  "var body = pm.response.json();",
+                  "pm.test('Response has errors object', function () { pm.expect(body).to.have.property('errors'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Paginate Companies - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies?page=1&per_page=15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "per_page", "value": "15" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var body = pm.response.json();",
+                  "pm.test('Laravel pagination shape', function () {",
+                  "  pm.expect(body).to.have.property('data');",
+                  "  pm.expect(body).to.have.property('links');",
+                  "  pm.expect(body).to.have.property('meta');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Companies Selector - 200",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies/selector",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies", "selector"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var body = pm.response.json();",
+                  "pm.test('Selector response has data array', function () { pm.expect(body).to.have.property('data'); pm.expect(body.data).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Company - 200",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commercial_name\": \"Go Flores Updated\",\n  \"status\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies/{{company_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies", "{{company_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                  "var body = pm.response.json();",
+                  "pm.test('Update returns data and message', function () { pm.expect(body).to.have.property('data'); pm.expect(body).to.have.property('message'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Company - 422 Duplicated commercial_name",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Accept", "value": "application/json", "type": "text" },
+              { "key": "Content-Type", "value": "application/json", "type": "text" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commercial_name\": \"Commercial Company 1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/companies/{{company_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "companies", "{{company_id}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 422', function () { pm.response.to.have.status(422); });",
+                  "var body = pm.response.json();",
+                  "pm.test('Validation error payload', function () { pm.expect(body).to.have.property('errors'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000", "type": "string" },
+    { "key": "company_id", "value": "1", "type": "string" }
+  ]
+}

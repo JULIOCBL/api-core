@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Company;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Company;
 
 class CompaniesSeeder extends Seeder
 {
-   protected $records = [
+    protected $records = [
         [
             'id' => 1,
             'name'             => 'Lisytech',
@@ -24,6 +23,7 @@ class CompaniesSeeder extends Seeder
             'status'           => 1
         ]
     ];
+
     /**
      * Run the database seeds.
      */

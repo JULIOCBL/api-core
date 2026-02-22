@@ -1,17 +1,18 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-function errorCodeException($code)
+function errorCodeException(int $code): int
 {
     $code = ($code == 0 ? 500 : $code);
 
     return $code;
 }
 
-function reportCustom($type, Request $exception)
+function reportCustom(string $type, Request $exception): void
 {
     $json_exception = json_encode($exception->all());
 
@@ -40,13 +41,15 @@ function reportCustom($type, Request $exception)
         case 'debug':
             Log::debug($json_exception);
             break;
+        default:
+            Log::error((string) $json_exception);
+            break;
     }
 }
 
-function customException($type, Request $request)
+function customException(string $type, Request $request): Request
 {
-
-    $array = array();
+    $array = [];
 
     if ($request->has('ip') && $request->ip == true) {
         $array['ip'] = request()->ip();
@@ -55,7 +58,7 @@ function customException($type, Request $request)
     if ($request->has('title') && !empty($request->title)) {
         $array['title'] = Str::ascii($request->title);
     }
-    if ($request->has(' ') && !empty($request->detail)) {
+    if ($request->has('detail') && !empty($request->detail)) {
         $array['detail'] = Str::ascii($request->detail);
     }
 
@@ -73,12 +76,11 @@ function customException($type, Request $request)
         reportCustom($type, $exception);
     }
 
-
     return $exception;
 }
 
 
-function storedProcedureErrorInfo($error_info)
+function storedProcedureErrorInfo(array $error_info): ?\stdClass
 {
 
     if (isset($error_info[2])) {
@@ -92,19 +94,19 @@ function storedProcedureErrorInfo($error_info)
     return null;
 }
 
-function linkToArray($url)
+function linkToArray(string $url): array
 {
-    // Divide la cadena en pares clave-valor
     $pairs = explode('&', $url);
-
-    // Inicializa el arreglo de resultados
     $result = [];
 
-    // Itera sobre cada par clave-valor
     foreach ($pairs as $pair) {
-        // Divide el par clave-valor en clave y valor
-        list($key, $value) = explode('=', $pair);
-        // Decodifica el valor y añádelo al arreglo resultante
+        $parts = explode('=', $pair, 2);
+        if (count($parts) !== 2) {
+            continue;
+        }
+
+        $key = $parts[0];
+        $value = $parts[1];
         $result[urldecode($key)] = urldecode($value);
     }
 

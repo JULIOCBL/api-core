@@ -1,9 +1,11 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 class GenerateKeyPair extends Command
 {
@@ -15,34 +17,43 @@ class GenerateKeyPair extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): int
     {
         $config = [
-            "digest_alg" => "sha256",
-            "private_key_bits" => 2048,
-            "private_key_type" => OPENSSL_KEYTYPE_RSA,
+            'digest_alg' => 'sha256',
+            'private_key_bits' => 2048,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
         ];
 
-        // Generar la clave privada
-        $res = openssl_pkey_new($config);
+        $resource = openssl_pkey_new($config);
 
-        // Extraer la clave privada del par generado
-        openssl_pkey_export($res, $privKey);
-
-        // Obtener el detalle de la clave para extraer la clave pública
-        $pubKey = openssl_pkey_get_details($res);
-        $pubKey = $pubKey["key"];
-
-        // Asegurarse de que la carpeta "keys" exista
-        $keysPath = 'keys'; // La ruta relativa dentro del disco 'local'
-        if (!Storage::disk('local')->exists($keysPath)) {
-            Storage::disk('local')->makeDirectory($keysPath);
+        if ($resource === false) {
+            throw new RuntimeException('Unable to generate RSA key pair.');
         }
 
-        // Almacenar las claves en el sistema de archivos en la carpeta especificada
-        Storage::disk('local')->put($keysPath . '/private.key', $privKey);
-        Storage::disk('local')->put($keysPath . '/public.key', $pubKey);
+        $private_key = '';
+        $exported = openssl_pkey_export($resource, $private_key);
+        if ($exported === false || $private_key === '') {
+            throw new RuntimeException('Unable to export private key.');
+        }
+
+        $public_key_details = openssl_pkey_get_details($resource);
+        if ($public_key_details === false || !isset($public_key_details['key'])) {
+            throw new RuntimeException('Unable to extract public key.');
+        }
+
+        $public_key = (string) $public_key_details['key'];
+        $keys_path = 'keys';
+
+        if (!Storage::disk('local')->exists($keys_path)) {
+            Storage::disk('local')->makeDirectory($keys_path);
+        }
+
+        Storage::disk('local')->put($keys_path . '/private.key', $private_key);
+        Storage::disk('local')->put($keys_path . '/public.key', $public_key);
 
         $this->info('RSA key pair generated successfully. [storage/app/keys/private.key, storage/app/keys/public.key]');
+
+        return Command::SUCCESS;
     }
 }

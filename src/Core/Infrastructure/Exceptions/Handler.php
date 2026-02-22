@@ -1,12 +1,12 @@
 <?php
 
+
 namespace Src\Core\Infrastructure\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Src\Core\Infrastructure\Traits\ApiResponse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Response;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Src\Core\Infrastructure\Traits\ApiResponse;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,7 +39,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-
         $this->reportable(function (Throwable $e) {
             //
         });
@@ -65,8 +64,8 @@ class Handler extends ExceptionHandler
         if ($exception instanceof AuthorizationException) {
             return $this->errorsMessage(
                 [
-                    "status" => errorCodeException($exception->getCode()),
-                    "title" =>  __("auth.user_access.title"),
+                    'status' => errorCodeException($exception->getCode()),
+                    'title' => __('auth.user_access.title'),
                     "message" => __("auth.user_access.description")
                 ],
                 $exception->getCode(),
@@ -93,9 +92,9 @@ class Handler extends ExceptionHandler
 
                         return $this->errorsMessage(
                             [
-                                "status" => $error_info->codigo,
-                                "title" =>  __($error_info->title),
-                                "message" => __($error_info->description, $replace)
+                                'status' => $error_info->codigo,
+                                'title' => __($error_info->title),
+                                'message' => __($error_info->description, $replace)
                             ],
                             $error_info->codigo,
                             1000,
