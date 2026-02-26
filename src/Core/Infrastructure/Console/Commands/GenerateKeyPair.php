@@ -7,6 +7,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
+/**
+ * Comando para generar par de llaves RSA usado por JWT.
+ */
 class GenerateKeyPair extends Command
 {
     protected $signature = 'generate:keys';
@@ -17,6 +20,9 @@ class GenerateKeyPair extends Command
         parent::__construct();
     }
 
+    /**
+     * @return int
+     */
     public function handle(): int
     {
         $config = [

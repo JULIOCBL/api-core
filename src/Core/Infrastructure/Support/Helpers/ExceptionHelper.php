@@ -5,6 +5,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * Normaliza el código HTTP cuando llega en cero.
+ *
+ * @param int $code
+ * @return int
+ */
 function errorCodeException(int $code): int
 {
     $code = ($code == 0 ? 500 : $code);
@@ -12,6 +18,13 @@ function errorCodeException(int $code): int
     return $code;
 }
 
+/**
+ * Reporta una excepción personalizada al canal de logs.
+ *
+ * @param string $type
+ * @param Request $exception
+ * @return void
+ */
 function reportCustom(string $type, Request $exception): void
 {
     $json_exception = json_encode($exception->all());
@@ -47,6 +60,13 @@ function reportCustom(string $type, Request $exception): void
     }
 }
 
+/**
+ * Construye un objeto request con estructura uniforme de error.
+ *
+ * @param string $type
+ * @param Request $request
+ * @return Request
+ */
 function customException(string $type, Request $request): Request
 {
     $array = [];
@@ -80,6 +100,12 @@ function customException(string $type, Request $request): Request
 }
 
 
+/**
+ * Obtiene información de error devuelta por un procedimiento almacenado.
+ *
+ * @param array<int, mixed> $error_info
+ * @return \stdClass|null
+ */
 function storedProcedureErrorInfo(array $error_info): ?\stdClass
 {
 
@@ -94,6 +120,12 @@ function storedProcedureErrorInfo(array $error_info): ?\stdClass
     return null;
 }
 
+/**
+ * Convierte un query string en arreglo asociativo.
+ *
+ * @param string $url
+ * @return array<string, string>
+ */
 function linkToArray(string $url): array
 {
     $pairs = explode('&', $url);

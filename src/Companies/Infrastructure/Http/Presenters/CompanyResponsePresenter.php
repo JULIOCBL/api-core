@@ -7,8 +7,16 @@ use Src\Companies\Domain\Entities\CompanySelectorItem;
 use Src\Companies\Domain\ValueObjects\CompanySelectorCollection;
 use Src\Companies\Domain\ValueObjects\PaginatedCompanies;
 
+/**
+ * Presenter para convertir objetos de dominio de compañías
+ * a estructuras de respuesta HTTP.
+ */
 class CompanyResponsePresenter
 {
+    /**
+     * @param Company $company
+     * @return array<string, mixed>
+     */
     public function present(Company $company): array
     {
         return [
@@ -27,6 +35,10 @@ class CompanyResponsePresenter
         ];
     }
 
+    /**
+     * @param PaginatedCompanies $paginated_companies
+     * @return array<string, mixed>
+     */
     public function presentPaginated(PaginatedCompanies $paginated_companies): array
     {
         $items = [];
@@ -65,6 +77,10 @@ class CompanyResponsePresenter
         ];
     }
 
+    /**
+     * @param CompanySelectorCollection $company_selector_collection
+     * @return array<int, array<string, mixed>>
+     */
     public function presentSelector(CompanySelectorCollection $company_selector_collection): array
     {
         $items = [];
@@ -76,6 +92,10 @@ class CompanyResponsePresenter
         return $items;
     }
 
+    /**
+     * @param CompanySelectorItem $company_selector_item
+     * @return array<string, int|string>
+     */
     private function presentSelectorItem(CompanySelectorItem $company_selector_item): array
     {
         return [

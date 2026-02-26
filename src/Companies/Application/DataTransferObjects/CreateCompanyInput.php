@@ -2,8 +2,24 @@
 
 namespace Src\Companies\Application\DataTransferObjects;
 
+/**
+ * DTO de entrada para crear una compañía.
+ */
 class CreateCompanyInput
 {
+    /**
+     * @param string $name
+     * @param string $commercial_name
+     * @param string|null $bussiness_name
+     * @param string|null $rfc
+     * @param string|null $contact_phone
+     * @param string|null $email
+     * @param string|null $primary_color
+     * @param string|null $secondary_color
+     * @param string|null $tertiary_color
+     * @param string|null $image_logo
+     * @param bool $status
+     */
     public function __construct(
         private string $name,
         private string $commercial_name,
@@ -19,6 +35,12 @@ class CreateCompanyInput
     ) {
     }
 
+    /**
+     * Crea el DTO desde el arreglo validado del request.
+     *
+     * @param array<string, mixed> $company_data
+     * @return self
+     */
     public static function fromArray(array $company_data): self
     {
         return new self(

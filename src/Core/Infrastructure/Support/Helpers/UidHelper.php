@@ -4,6 +4,12 @@
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * Genera un UUID4 único para la llave primaria del modelo indicado.
+ *
+ * @param Model $model
+ * @return string
+ */
 function uid(Model $model): string
 {
 

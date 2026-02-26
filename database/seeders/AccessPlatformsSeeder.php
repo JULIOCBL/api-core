@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AccessPlatform;
+use Src\Shared\Infrastructure\Persistence\Eloquent\Models\AccessPlatform;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

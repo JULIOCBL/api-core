@@ -2,6 +2,9 @@
 
 namespace Src\Companies\Domain\Entities;
 
+/**
+ * Entidad de dominio que representa una compañía.
+ */
 class Company
 {
     public function __construct(

@@ -4,6 +4,9 @@ namespace Src\Companies\Domain\ValueObjects;
 
 use Src\Companies\Domain\Entities\Company;
 
+/**
+ * Value object para respuesta paginada de compañías.
+ */
 class PaginatedCompanies
 {
     /**

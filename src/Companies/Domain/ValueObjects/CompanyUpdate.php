@@ -2,6 +2,10 @@
 
 namespace Src\Companies\Domain\ValueObjects;
 
+/**
+ * Value object para actualización parcial de compañía.
+ * Incluye banderas `has_*` para distinguir ausencia de campo y `null`.
+ */
 class CompanyUpdate
 {
     public function __construct(

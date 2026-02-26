@@ -23,7 +23,7 @@ class JsonException extends RuntimeException
      * @param int $code Código HTTP de respuesta (ej. 401, 404, 500).
      * @param string $source Fuente opcional del error (ej. nombre del módulo).
      * @param int $error_code Código interno personalizado (default: 1000).
-     * @param Exception|null $previous Excepción previa para chaining.
+     * @param RuntimeException|null $previous Excepción previa para chaining.
      */
     public function __construct(
         protected string $type,

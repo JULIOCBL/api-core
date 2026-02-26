@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\UserStatus;
+use Src\Shared\Infrastructure\Persistence\Eloquent\Models\UserStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

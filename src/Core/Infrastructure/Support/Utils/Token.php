@@ -9,9 +9,18 @@ use Illuminate\Support\Facades\Crypt;
 use RuntimeException;
 use stdClass;
 
+/**
+ * Utilidad para codificar y decodificar tokens JWT cifrados.
+ */
 class Token
 {
 
+    /**
+     * Firma un payload JWT con llave privada y cifra el resultado.
+     *
+     * @param array<string, mixed> $data
+     * @return string
+     */
     public static function encode(array $data): string
     {
         $private_key = file_get_contents(storage_path('app/private/keys/private.key'));
@@ -24,6 +33,12 @@ class Token
         return Crypt::encrypt($token);
     }
 
+    /**
+     * Descifra un token y valida su firma con llave pública.
+     *
+     * @param string $data
+     * @return stdClass
+     */
     public static function decode(string $data): stdClass
     {
         $data = Crypt::decrypt($data);

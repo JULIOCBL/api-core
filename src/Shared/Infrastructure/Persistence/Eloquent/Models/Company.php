@@ -5,6 +5,9 @@ namespace Src\Shared\Infrastructure\Persistence\Eloquent\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Modelo Eloquent compartido de compañías para módulos del proyecto.
+ */
 class Company extends Model
 {
     use SoftDeletes;

@@ -7,12 +7,24 @@ use Src\Companies\Domain\Contracts\CompanyRepositoryInterface;
 use Src\Companies\Domain\Entities\Company;
 use Src\Companies\Domain\ValueObjects\CompanyDraft;
 
+/**
+ * Caso de uso para crear compañías.
+ */
 class CreateCompanyUseCase
 {
+    /**
+     * @param CompanyRepositoryInterface $company_repository
+     */
     public function __construct(private CompanyRepositoryInterface $company_repository)
     {
     }
 
+    /**
+     * Ejecuta el flujo de creación.
+     *
+     * @param CreateCompanyInput $create_company_input
+     * @return Company
+     */
     public function execute(CreateCompanyInput $create_company_input): Company
     {
         $company_draft = new CompanyDraft(

@@ -13,12 +13,22 @@ use Src\Companies\Domain\ValueObjects\PaginatedCompanies;
 use Src\Companies\Infrastructure\Persistence\Builders\CompanyDataQueryBuilder;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Company as CompanyModel;
 
+/**
+ * Adaptador de infraestructura para compañías usando Eloquent.
+ */
 class EloquentCompanyRepository implements CompanyRepositoryInterface
 {
+    /**
+     * @param CompanyDataQueryBuilder $company_data_query_builder
+     */
     public function __construct(private CompanyDataQueryBuilder $company_data_query_builder)
     {
     }
 
+    /**
+     * @param CompanyDraft $company_draft
+     * @return Company
+     */
     public function create(CompanyDraft $company_draft): Company
     {
         $company_model = CompanyModel::query()->create([
@@ -38,6 +48,11 @@ class EloquentCompanyRepository implements CompanyRepositoryInterface
         return $this->toDomainCompany($company_model);
     }
 
+    /**
+     * @param int $company_id
+     * @param CompanyUpdate $company_update
+     * @return Company
+     */
     public function update(int $company_id, CompanyUpdate $company_update): Company
     {
         $company_model = CompanyModel::query()->whereKey($company_id)->whereNull('deleted_at')->first();
@@ -98,6 +113,12 @@ class EloquentCompanyRepository implements CompanyRepositoryInterface
         return $this->toDomainCompany($company_model);
     }
 
+    /**
+     * @param int $page
+     * @param int $per_page
+     * @param array<string, mixed> $filters
+     * @return PaginatedCompanies
+     */
     public function paginate(int $page, int $per_page, array $filters): PaginatedCompanies
     {
         $paginator = $this->company_data_query_builder->paginate($filters, $page, $per_page);
@@ -124,6 +145,9 @@ class EloquentCompanyRepository implements CompanyRepositoryInterface
         );
     }
 
+    /**
+     * @return CompanySelectorCollection
+     */
     public function selector(): CompanySelectorCollection
     {
         $company_models = $this->company_data_query_builder->selector();
@@ -140,6 +164,12 @@ class EloquentCompanyRepository implements CompanyRepositoryInterface
         return new CompanySelectorCollection($items);
     }
 
+    /**
+     * Mapea un modelo Eloquent a entidad de dominio.
+     *
+     * @param CompanyModel $company_model
+     * @return Company
+     */
     private function toDomainCompany(CompanyModel $company_model): Company
     {
         return new Company(

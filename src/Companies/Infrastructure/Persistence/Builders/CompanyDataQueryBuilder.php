@@ -8,10 +8,22 @@ use Illuminate\Database\Eloquent\Collection;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Company as CompanyModel;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Traits\AppliesQueryFilters;
 
+/**
+ * Builder de consulta para compañías.
+ * Centraliza la base de query y variantes de salida (paginado y selector).
+ */
 class CompanyDataQueryBuilder
 {
     use AppliesQueryFilters;
 
+    /**
+     * Obtiene compañías paginadas aplicando filtros y orden.
+     *
+     * @param array<string, mixed> $filters
+     * @param int $page
+     * @param int $per_page
+     * @return LengthAwarePaginator
+     */
     public function paginate(array $filters, int $page, int $per_page): LengthAwarePaginator
     {
         $query = $this->buildBaseQuery();
@@ -26,6 +38,11 @@ class CompanyDataQueryBuilder
         return $query->paginate($per_page, ['*'], 'page', $page);
     }
 
+    /**
+     * Obtiene listado para selector (sin paginación).
+     *
+     * @return Collection<int, CompanyModel>
+     */
     public function selector(): Collection
     {
         return $this->buildBaseQuery()
@@ -33,11 +50,22 @@ class CompanyDataQueryBuilder
             ->get(['id', 'commercial_name']);
     }
 
+    /**
+     * Construye query base para compañías.
+     *
+     * @return Builder
+     */
     private function buildBaseQuery(): Builder
     {
         return CompanyModel::query()->orderBy('id');
     }
 
+    /**
+     * Aplica filtros disponibles del endpoint de compañías.
+     *
+     * @param Builder $query
+     * @param array<string, mixed> $filters
+     */
     private function applyFilters(Builder $query, array $filters): void
     {
         $exact_filters = [
@@ -69,6 +97,12 @@ class CompanyDataQueryBuilder
         $this->applySearchFilter($query, $filters, 'search', $search_columns);
     }
 
+    /**
+     * Aplica ordenamiento permitido del endpoint de compañías.
+     *
+     * @param Builder $query
+     * @param array<string, mixed> $filters
+     */
     private function applySorting(Builder $query, array $filters): void
     {
         $sort_columns = [
@@ -83,6 +117,6 @@ class CompanyDataQueryBuilder
             'created_at' => 'created_at',
         ];
 
-        $this->applySortFilters($query, $filters, $sort_columns, 'id', 'asc');
+        $this->applySortFilter($query, $filters, $sort_columns, 'id', 'asc');
     }
 }

@@ -4,6 +4,9 @@ namespace Src\Companies\Domain\ValueObjects;
 
 use Src\Companies\Domain\Entities\CompanySelectorItem;
 
+/**
+ * Colección de items para selector de compañías.
+ */
 class CompanySelectorCollection
 {
     /**

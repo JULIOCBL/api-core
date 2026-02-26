@@ -6,8 +6,14 @@ namespace Src\Core\Infrastructure\Providers;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
+use Src\Auth\Domain\Contracts\AuthGatewayInterface;
+use Src\Auth\Infrastructure\Persistence\EloquentAuthGateway;
 use Src\Companies\Domain\Contracts\CompanyRepositoryInterface;
 use Src\Companies\Infrastructure\Persistence\EloquentCompanyRepository;
+use Src\Permissions\Application\Contracts\GetAssignedModulesByPlatformInterface;
+use Src\Permissions\Application\UseCases\GetAssignedModulesByPlatform;
+use Src\Permissions\Domain\Contracts\PermissionInterface;
+use Src\Permissions\Infrastructure\Persistence\EloquentPermissionRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,7 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(AuthGatewayInterface::class, EloquentAuthGateway::class);
         $this->app->bind(CompanyRepositoryInterface::class, EloquentCompanyRepository::class);
+        $this->app->bind(GetAssignedModulesByPlatformInterface::class, GetAssignedModulesByPlatform::class);
+        $this->app->bind(PermissionInterface::class, EloquentPermissionRepository::class);
     }
 
     /**

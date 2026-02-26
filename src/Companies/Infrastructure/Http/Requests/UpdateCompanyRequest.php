@@ -6,15 +6,24 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Src\Core\Infrastructure\Traits\HandlesFailedValidation;
 
+/**
+ * Request de validación para actualización parcial de compañía.
+ */
 class UpdateCompanyRequest extends FormRequest
 {
     use HandlesFailedValidation;
 
+    /**
+     * @return bool
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         $company_id = (int) $this->route('company_id');

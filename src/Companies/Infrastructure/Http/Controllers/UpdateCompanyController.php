@@ -11,14 +11,26 @@ use Src\Companies\Infrastructure\Http\Requests\UpdateCompanyRequest;
 use Src\Core\Infrastructure\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
+/**
+ * Controlador para actualización de compañías.
+ */
 class UpdateCompanyController extends Controller
 {
+    /**
+     * @param UpdateCompanyUseCase $update_company_use_case
+     * @param CompanyResponsePresenter $company_response_presenter
+     */
     public function __construct(
         private UpdateCompanyUseCase $update_company_use_case,
         private CompanyResponsePresenter $company_response_presenter
     ) {
     }
 
+    /**
+     * @param UpdateCompanyRequest $update_company_request
+     * @param int $company_id
+     * @return Response
+     */
     public function updateCompany(UpdateCompanyRequest $update_company_request, int $company_id): Response
     {
         $update_company_input = UpdateCompanyInput::fromArray($company_id, $update_company_request->validated());

@@ -6,8 +6,18 @@ namespace Src\Core\Infrastructure\Support\Utils;
 use Carbon\Carbon;
 use DateTimeZone;
 
+/**
+ * Extensión de Carbon que prioriza la zona horaria enviada por cliente.
+ */
 class ClientCarbon extends Carbon
 {
+    /**
+     * Obtiene la fecha actual en la zona horaria del header `X-Timezone`
+     * o en la zona configurada por defecto.
+     *
+     * @param DateTimeZone|string|int|null $timezone
+     * @return static
+     */
     public static function now(DateTimeZone|string|int|null $timezone = null): static
     {
         // Extraer desde header si no se pasa explícito

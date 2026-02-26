@@ -7,8 +7,17 @@ namespace Src\Core\Infrastructure\Traits;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
+/**
+ * Trait para estandarizar respuestas exitosas y de error en API.
+ */
 trait ApiResponse
 {
+    /**
+     * @param mixed $data
+     * @param array<string, string>|string $message
+     * @param int $code
+     * @return Response
+     */
     public function successResponse(mixed $data, array|string $message = '', int $code = HttpResponse::HTTP_OK): Response
     {
         $body = [];
@@ -29,6 +38,12 @@ trait ApiResponse
     }
 
 
+    /**
+     * @param array<string, mixed> $message
+     * @param int $code
+     * @param int $error_code
+     * @return Response
+     */
     public function errorsMessage(array $message, int $code, int $error_code = 1000): Response
     {
         $code = errorCodeException($code);

@@ -5,11 +5,17 @@ namespace Src\Companies\Infrastructure\Console\Commands;
 use Illuminate\Console\Command;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Company;
 
+/**
+ * Comando para crear o actualizar compañías de prueba por lote.
+ */
 class CreateCompaniesBatch extends Command
 {
     protected $signature = 'companies:create-batch {count=32}';
     protected $description = 'Create or update a batch of companies';
 
+    /**
+     * @return int
+     */
     public function handle(): int
     {
         $count = (int) $this->argument('count');

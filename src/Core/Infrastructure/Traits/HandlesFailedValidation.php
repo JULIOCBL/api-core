@@ -7,8 +7,15 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
+/**
+ * Trait para estandarizar el formato de error de validación en requests.
+ */
 trait HandlesFailedValidation
 {
+    /**
+     * @param Validator $validator
+     * @return void
+     */
     protected function failedValidation(Validator $validator): void
     {
         $errors = $validator->errors();

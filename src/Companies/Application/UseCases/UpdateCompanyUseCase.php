@@ -7,12 +7,24 @@ use Src\Companies\Domain\Contracts\CompanyRepositoryInterface;
 use Src\Companies\Domain\Entities\Company;
 use Src\Companies\Domain\ValueObjects\CompanyUpdate;
 
+/**
+ * Caso de uso para actualización de compañías.
+ */
 class UpdateCompanyUseCase
 {
+    /**
+     * @param CompanyRepositoryInterface $company_repository
+     */
     public function __construct(private CompanyRepositoryInterface $company_repository)
     {
     }
 
+    /**
+     * Ejecuta el flujo de actualización parcial.
+     *
+     * @param UpdateCompanyInput $update_company_input
+     * @return Company
+     */
     public function execute(UpdateCompanyInput $update_company_input): Company
     {
         $company_update = new CompanyUpdate(

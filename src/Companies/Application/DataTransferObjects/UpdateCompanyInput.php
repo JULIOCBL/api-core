@@ -2,8 +2,36 @@
 
 namespace Src\Companies\Application\DataTransferObjects;
 
+/**
+ * DTO de entrada para actualización parcial de compañía.
+ */
 class UpdateCompanyInput
 {
+    /**
+     * @param int $company_id
+     * @param string|null $name
+     * @param bool $has_name
+     * @param string|null $commercial_name
+     * @param bool $has_commercial_name
+     * @param string|null $bussiness_name
+     * @param bool $has_bussiness_name
+     * @param string|null $rfc
+     * @param bool $has_rfc
+     * @param string|null $contact_phone
+     * @param bool $has_contact_phone
+     * @param string|null $email
+     * @param bool $has_email
+     * @param string|null $primary_color
+     * @param bool $has_primary_color
+     * @param string|null $secondary_color
+     * @param bool $has_secondary_color
+     * @param string|null $tertiary_color
+     * @param bool $has_tertiary_color
+     * @param string|null $image_logo
+     * @param bool $has_image_logo
+     * @param bool|null $status
+     * @param bool $has_status
+     */
     public function __construct(
         private int $company_id,
         private ?string $name,
@@ -31,6 +59,13 @@ class UpdateCompanyInput
     ) {
     }
 
+    /**
+     * Crea el DTO desde el arreglo validado del request.
+     *
+     * @param int $company_id
+     * @param array<string, mixed> $company_data
+     * @return self
+     */
     public static function fromArray(int $company_id, array $company_data): self
     {
         return new self(

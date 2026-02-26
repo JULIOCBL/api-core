@@ -2,6 +2,9 @@
 
 use Src\Core\Infrastructure\Providers\AppServiceProvider;
 use Src\Core\Infrastructure\Providers\RouteServiceProvider;
+use Src\Auth\Infrastructure\Providers\AuthLangServiceProvider;
+use Src\Companies\Infrastructure\Providers\CompaniesLangServiceProvider;
+use Src\Shared\Infrastructure\Providers\SharedLangServiceProvider;
 
 return [
 
@@ -157,6 +160,9 @@ return [
          * Application Service Providers...
          */
         AppServiceProvider::class,
+        AuthLangServiceProvider::class,
+        CompaniesLangServiceProvider::class,
+        SharedLangServiceProvider::class,
         //App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         //App\Providers\EventServiceProvider::class,

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use Src\Shared\Infrastructure\Persistence\Eloquent\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Crypt;
@@ -32,7 +32,7 @@ class UsersSeeder extends Seeder
                 ]
             );
 
-            User::query()->update(['password' => Crypt::encrypt('gst' . date('Y'))]);
+            User::query()->update(['password' => Crypt::encrypt('gf' . date('Y'))]);
         } else {
 
             User::firstOrCreate(

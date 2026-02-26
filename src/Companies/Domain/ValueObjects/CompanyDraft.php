@@ -2,6 +2,9 @@
 
 namespace Src\Companies\Domain\ValueObjects;
 
+/**
+ * Value object con los datos requeridos para crear una compañía.
+ */
 class CompanyDraft
 {
     public function __construct(

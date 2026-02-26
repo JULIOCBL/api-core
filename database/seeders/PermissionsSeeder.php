@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
+use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Src\Core\Infrastructure\Support\Utils\CacheWithIndex;
