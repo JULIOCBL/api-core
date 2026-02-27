@@ -3,16 +3,17 @@
 namespace Src\Auth\Infrastructure\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Psr\Log\LogLevel;
 use Src\Auth\Application\DataTransferObjects\LoginInput;
 use Src\Auth\Application\UseCases\LoginUseCase;
 use Src\Auth\Domain\Exceptions\InvalidCredentialsException;
+use Src\Auth\Domain\Exceptions\LoginAttemptsExceededException;
 use Src\Auth\Domain\Exceptions\UserLockedException;
 use Src\Auth\Infrastructure\Http\Presenters\AuthResponsePresenter;
 use Src\Auth\Infrastructure\Http\Requests\LoginRequest;
 use Src\Core\Infrastructure\Exceptions\JsonException;
 use Src\Core\Infrastructure\Http\Controllers\Controller;
 use Src\Shared\Infrastructure\Errors\ErrorCodes;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
@@ -67,29 +68,25 @@ class LoginController extends Controller
                 __('auth::login.temporarily_locked.description'),
                 HttpResponse::HTTP_LOCKED,
                 '',
-                ErrorCodes::AUTH_USER_LOCKED_TEMPORARILY
+                ErrorCodes::AUTH_USER_LOCKED_TEMPORARILY_1005
+            );
+        } catch (LoginAttemptsExceededException $login_attempts_exceeded_exception) {
+            throw new JsonException(
+                LogLevel::WARNING,
+                __('auth::login.last_attempt_before_lockout.title'),
+                __('auth::login.last_attempt_before_lockout.description', ['attempt' => $login_attempts_exceeded_exception->getRemainingAttempts()]),
+                HttpResponse::HTTP_TOO_MANY_REQUESTS,
+                '',
+                ErrorCodes::AUTH_LOGIN_ATTEMPTS_EXCEEDED_1006
             );
         } catch (InvalidCredentialsException $invalid_credentials_exception) {
-            $attempts = (int) $invalid_credentials_exception->getMessage();
-
-            if ($attempts > 0) {
-                throw new JsonException(
-                    LogLevel::WARNING,
-                    __('auth::login.last_attempt_before_lockout.title'),
-                    __('auth::login.last_attempt_before_lockout.description', ['attempt' => $attempts]),
-                    HttpResponse::HTTP_TOO_MANY_REQUESTS,
-                    '',
-                    ErrorCodes::AUTH_LOGIN_ATTEMPTS_EXCEEDED
-                );
-            }
-
             throw new JsonException(
                 LogLevel::WARNING,
                 __('auth::login.invalid_credentials.title'),
                 __('auth::login.invalid_credentials.description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
-                ErrorCodes::AUTH_INVALID_CREDENTIALS
+                ErrorCodes::AUTH_INVALID_CREDENTIALS_1004
             );
         }
 

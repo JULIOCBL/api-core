@@ -3,7 +3,6 @@
 namespace Src\Auth\Infrastructure\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Psr\Log\LogLevel;
 use Src\Auth\Application\DataTransferObjects\RefreshTokenInput;
 use Src\Auth\Application\UseCases\RefreshTokenUseCase;
 use Src\Auth\Domain\Exceptions\InvalidRefreshTokenException;
@@ -12,6 +11,7 @@ use Src\Auth\Infrastructure\Http\Requests\RefreshTokenRequest;
 use Src\Core\Infrastructure\Exceptions\JsonException;
 use Src\Core\Infrastructure\Http\Controllers\Controller;
 use Src\Shared\Infrastructure\Errors\ErrorCodes;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 /**
@@ -36,7 +36,6 @@ class RefreshTokenController extends Controller
     public function refresh(RefreshTokenRequest $refresh_token_request): Response
     {
         $refresh_token_input = RefreshTokenInput::fromArray($refresh_token_request->validated());
-
         try {
             $auth_session = $this->refresh_token_use_case->execute($refresh_token_input);
         } catch (InvalidRefreshTokenException $invalid_refresh_token_exception) {
@@ -46,7 +45,7 @@ class RefreshTokenController extends Controller
                 __('auth::session.invalid_refresh_token_description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
-                ErrorCodes::AUTH_UNAUTHORIZED
+                ErrorCodes::AUTH_UNAUTHORIZED_1003
             );
         }
 

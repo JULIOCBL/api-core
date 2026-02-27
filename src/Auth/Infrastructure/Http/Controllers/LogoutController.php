@@ -45,12 +45,11 @@ class LogoutController extends Controller
                 __('auth::session.missing_access_token_description'),
                 HttpResponse::HTTP_UNPROCESSABLE_ENTITY,
                 '',
-                ErrorCodes::AUTH_UNAUTHORIZED
+                ErrorCodes::AUTH_UNAUTHORIZED_1003
             );
         }
 
         $logout_input = LogoutInput::fromToken($access_token);
-
         try {
             $this->logout_use_case->execute($logout_input);
         } catch (InvalidAccessTokenException $invalid_access_token_exception) {
@@ -60,7 +59,7 @@ class LogoutController extends Controller
                 __('auth::session.invalid_access_token_description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
-                ErrorCodes::AUTH_UNAUTHORIZED
+                ErrorCodes::AUTH_UNAUTHORIZED_1003
             );
         }
 

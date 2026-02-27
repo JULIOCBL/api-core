@@ -4,12 +4,13 @@ namespace Src\Auth\Infrastructure\Persistence;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Src\Auth\Domain\Contracts\AuthGatewayInterface;
-use Src\Auth\Domain\Entities\AuthenticatedUser;
 use Src\Auth\Domain\Exceptions\InvalidAccessTokenException;
 use Src\Auth\Domain\Exceptions\InvalidCredentialsException;
 use Src\Auth\Domain\Exceptions\InvalidRefreshTokenException;
+use Src\Auth\Domain\Exceptions\LoginAttemptsExceededException;
 use Src\Auth\Domain\Exceptions\UserLockedException;
+use Src\Auth\Domain\Entities\AuthenticatedUser;
+use Src\Auth\Domain\Contracts\AuthGatewayInterface;
 use Src\Auth\Domain\ValueObjects\AuthSession;
 use Src\Auth\Domain\ValueObjects\ClientContext;
 use Src\Core\Infrastructure\Support\Utils\ClientCarbon;
@@ -43,12 +44,12 @@ class EloquentAuthGateway implements AuthGatewayInterface
             $user_model = $this->getUserByIdentifier($identifier);
 
             if ($user_model === null) {
-                $auth_exception = new InvalidCredentialsException('Invalid credentials.');
+                $auth_exception = new InvalidCredentialsException();
                 return null;
             }
 
             if (in_array((int) $user_model->user_status_id, [2, 3, 4], true)) {
-                $auth_exception = new UserLockedException('The user is locked.');
+                $auth_exception = new UserLockedException();
                 return null;
             }
 
@@ -60,14 +61,14 @@ class EloquentAuthGateway implements AuthGatewayInterface
                     $user_model->user_status_id = 4;
                     $user_model->save();
 
-                    $auth_exception = new UserLockedException('The user is temporarily locked.');
+                    $auth_exception = new UserLockedException();
                     return null;
                 }
 
                 $user_model->session_attempts = $remaining_attempts;
                 $user_model->save();
 
-                $auth_exception = new InvalidCredentialsException((string) $remaining_attempts);
+                $auth_exception = new LoginAttemptsExceededException($remaining_attempts);
                 return null;
             }
 
@@ -84,7 +85,7 @@ class EloquentAuthGateway implements AuthGatewayInterface
         }
 
         if ($auth_session === null) {
-            throw new InvalidCredentialsException('Invalid credentials.');
+            throw new InvalidCredentialsException();
         }
 
         return $auth_session;
@@ -100,7 +101,7 @@ class EloquentAuthGateway implements AuthGatewayInterface
             $refresh_token_payload = $this->decodeTokenPayload($refresh_token, 'refresh');
             $refresh_token_id = (int) ($refresh_token_payload->jwtid ?? 0);
             if ($refresh_token_id <= 0) {
-                throw new InvalidRefreshTokenException('Invalid refresh token.');
+                throw new InvalidRefreshTokenException();
             }
 
             $refresh_model = RefreshAccessToken::query()
@@ -110,7 +111,7 @@ class EloquentAuthGateway implements AuthGatewayInterface
                 ->first();
 
             if ($refresh_model === null) {
-                throw new InvalidRefreshTokenException('Invalid refresh token.');
+                throw new InvalidRefreshTokenException();
             }
 
             $personal_access_token_model = PersonalAccessToken::query()
@@ -120,13 +121,13 @@ class EloquentAuthGateway implements AuthGatewayInterface
                 ->first();
 
             if ($personal_access_token_model === null) {
-                throw new InvalidRefreshTokenException('Refresh token is not linked to an active session.');
+                throw new InvalidRefreshTokenException();
             }
 
             $user_model = $this->getUserById((string) $personal_access_token_model->user_id);
 
             if ($user_model === null || (int) $user_model->user_status_id !== 1) {
-                throw new InvalidRefreshTokenException('The user is not active.');
+                throw new InvalidRefreshTokenException();
             }
 
             $client_context = new ClientContext(
@@ -162,7 +163,7 @@ class EloquentAuthGateway implements AuthGatewayInterface
                 ->first();
 
             if ($personal_access_token_model === null) {
-                throw new InvalidAccessTokenException('Access token not found.');
+                throw new InvalidAccessTokenException();
             }
 
             RefreshAccessToken::query()
@@ -349,10 +350,10 @@ class EloquentAuthGateway implements AuthGatewayInterface
             $payload = Token::decode($token);
         } catch (Throwable $throwable) {
             if ($token_kind === 'refresh') {
-                throw new InvalidRefreshTokenException('Invalid refresh token.');
+                throw new InvalidRefreshTokenException();
             }
 
-            throw new InvalidAccessTokenException('Invalid access token.');
+            throw new InvalidAccessTokenException();
         }
 
         $token_not_before = (int) ($payload->nbf ?? 0);
@@ -361,10 +362,10 @@ class EloquentAuthGateway implements AuthGatewayInterface
 
         if ($token_not_before <= 0 || $token_expiration <= ClientCarbon::now()->timestamp || $platform_type === '') {
             if ($token_kind === 'refresh') {
-                throw new InvalidRefreshTokenException('Expired refresh token.');
+                throw new InvalidRefreshTokenException();
             }
 
-            throw new InvalidAccessTokenException('Expired access token.');
+            throw new InvalidAccessTokenException();
         }
 
         return $payload;

@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.missing_header_platform_type.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_MISSING_PLATFORM_HEADER
+                ErrorCodes::AUTH_MISSING_PLATFORM_HEADER_1007
             );
         }
 
@@ -40,7 +40,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.invalid_header_platform_type.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_INVALID_PLATFORM_HEADER
+                ErrorCodes::AUTH_INVALID_PLATFORM_HEADER_1008
             );
         }
 
@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
                     __('auth::login.invalid_header_token_ttl_hours.description'),
                     HttpResponse::HTTP_BAD_REQUEST,
                     '',
-                    ErrorCodes::AUTH_LOGIN_ERROR
+                    ErrorCodes::AUTH_LOGIN_ERROR_1001
                 );
             }
 
@@ -64,7 +64,7 @@ class LoginRequest extends FormRequest
                     __('auth::login.invalid_header_token_ttl_hours.description'),
                     HttpResponse::HTTP_BAD_REQUEST,
                     '',
-                    ErrorCodes::AUTH_LOGIN_ERROR
+                    ErrorCodes::AUTH_LOGIN_ERROR_1001
                 );
             }
         }
@@ -76,7 +76,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.missing_header_latitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR
+                ErrorCodes::AUTH_LOGIN_ERROR_1001
             );
         }
 
@@ -87,7 +87,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.missing_header_longitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR
+                ErrorCodes::AUTH_LOGIN_ERROR_1001
             );
         }
 
@@ -99,7 +99,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.invalid_header_latitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR
+                ErrorCodes::AUTH_LOGIN_ERROR_1001
             );
         }
 
@@ -111,7 +111,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.invalid_header_longitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR
+                ErrorCodes::AUTH_LOGIN_ERROR_1001
             );
         }
 
