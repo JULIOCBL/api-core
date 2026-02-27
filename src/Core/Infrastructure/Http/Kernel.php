@@ -4,8 +4,8 @@
 namespace Src\Core\Infrastructure\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Src\Auth\Infrastructure\Http\Middleware\Authenticate;
-use Src\Auth\Infrastructure\Http\Middleware\RedirectIfAuthenticated;
+use Src\Auth\Infrastructure\Http\Middleware\ResolveAuthUserContextMiddleware;
+use Src\Auth\Infrastructure\Http\Middleware\VerifyAccessTokenMiddleware;
 use Src\Core\Infrastructure\Http\Middleware\LanguageMiddleware;
 use Src\Core\Infrastructure\Http\Middleware\TrimStrings;
 use Src\Core\Infrastructure\Http\Middleware\TrustProxies;
@@ -68,6 +68,10 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         // Verifica que el correo electrónico del usuario esté verificado antes de acceder a ciertas rutas.
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        // Valida access token JWT y adjunta contexto de sesión al request.
+        'auth.token' => VerifyAccessTokenMiddleware::class,
+        // Resuelve usuario autenticado y contexto de compañía activa.
+        'auth.user_context' => ResolveAuthUserContextMiddleware::class,
 
     ];
 }

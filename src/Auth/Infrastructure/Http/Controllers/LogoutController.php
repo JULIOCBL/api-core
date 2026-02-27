@@ -41,8 +41,8 @@ class LogoutController extends Controller
         if ($access_token === null || $access_token === '') {
             throw new JsonException(
                 LogLevel::WARNING,
-                __('auth::session.missing_access_token_title'),
-                __('auth::session.missing_access_token_description'),
+                __('auth::session.missing_access_token.title'),
+                __('auth::session.missing_access_token.description'),
                 HttpResponse::HTTP_UNPROCESSABLE_ENTITY,
                 '',
                 ErrorCodes::AUTH_UNAUTHORIZED_1003
@@ -55,8 +55,8 @@ class LogoutController extends Controller
         } catch (InvalidAccessTokenException $invalid_access_token_exception) {
             throw new JsonException(
                 LogLevel::WARNING,
-                __('auth::session.invalid_access_token_title'),
-                __('auth::session.invalid_access_token_description'),
+                __('auth::session.invalid_access_token.title'),
+                __('auth::session.invalid_access_token.description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
                 ErrorCodes::AUTH_UNAUTHORIZED_1003
@@ -66,8 +66,8 @@ class LogoutController extends Controller
         return $this->successResponse(
             [],
             [
-                'title' => __('auth::session.logout_success_title'),
-                'description' => __('auth::session.logout_success_description'),
+                'title' => __('auth::session.logout_success.title'),
+                'description' => __('auth::session.logout_success.description'),
             ],
             HttpResponse::HTTP_OK
         );

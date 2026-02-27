@@ -11,19 +11,23 @@ class UserTypesSeeder extends Seeder
     protected $records = [
         [
             "id" => 1,
-            "name" => "Root"
+            "name" => "Root",
+            "constant" => "ROOT"
         ],
         [
             "id" => 2,
-            "name" => "Super Usuario"
+            "name" => "Super Usuario",
+            "constant" => "SUPER_USUARIO"
         ],
         [
             "id" => 3,
-            "name" => "Administrator"
+            "name" => "Administrator",
+            "constant" => "ADMINISTRATOR"
         ],
         [
             "id" => 4,
-            "name" => "User"
+            "name" => "User",
+            "constant" => "USER"
         ],
     ];
     /**
@@ -33,6 +37,6 @@ class UserTypesSeeder extends Seeder
      */
     public function run()
     {
-        UserType::upsert($this->records, ['id'], ['name']);
+        UserType::upsert($this->records, ['id'], ['name', 'constant']);
     }
 }

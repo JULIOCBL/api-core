@@ -15,6 +15,7 @@ use Src\Auth\Domain\ValueObjects\AuthSession;
 use Src\Auth\Domain\ValueObjects\ClientContext;
 use Src\Core\Infrastructure\Support\Utils\ClientCarbon;
 use Src\Core\Infrastructure\Support\Utils\Token;
+use Src\Core\Infrastructure\Support\Utils\TokenHash;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\PersonalAccessToken;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\RefreshAccessToken;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\User;
@@ -103,10 +104,11 @@ class EloquentAuthGateway implements AuthGatewayInterface
             if ($refresh_token_id <= 0) {
                 throw new InvalidRefreshTokenException();
             }
+            $refresh_token_hash = TokenHash::make($refresh_token);
 
             $refresh_model = RefreshAccessToken::query()
                 ->where('id', $refresh_token_id)
-                ->where('token', $refresh_token)
+                ->where('token', $refresh_token_hash)
                 ->where('expires_at', '>', ClientCarbon::now())
                 ->first();
 
@@ -155,10 +157,16 @@ class EloquentAuthGateway implements AuthGatewayInterface
     public function logout(string $access_token): void
     {
         DB::transaction(function () use ($access_token): void {
-            $this->decodeTokenPayload($access_token, 'access');
+            $access_token_payload = $this->decodeTokenPayload($access_token, 'access');
+            $access_token_id = (int) ($access_token_payload->jwtid ?? 0);
+            if ($access_token_id <= 0) {
+                throw new InvalidAccessTokenException();
+            }
+            $access_token_hash = TokenHash::make($access_token);
 
             $personal_access_token_model = PersonalAccessToken::query()
-                ->where('token', $access_token)
+                ->where('id', $access_token_id)
+                ->where('token', $access_token_hash)
                 ->whereNull('deleted_at')
                 ->first();
 
@@ -214,8 +222,9 @@ class EloquentAuthGateway implements AuthGatewayInterface
             ip: $client_context->getIp()
         );
         $access_token = Token::encode($access_payload);
+        $access_token_hash = TokenHash::make($access_token);
 
-        $personal_access_token_model->token = $access_token;
+        $personal_access_token_model->token = $access_token_hash;
         $personal_access_token_model->save();
 
         $refresh_model = RefreshAccessToken::query()->create([
@@ -231,8 +240,9 @@ class EloquentAuthGateway implements AuthGatewayInterface
             ip: $client_context->getIp()
         );
         $refresh_token = Token::encode($refresh_payload);
+        $refresh_token_hash = TokenHash::make($refresh_token);
 
-        $refresh_model->token = $refresh_token;
+        $refresh_model->token = $refresh_token_hash;
         $refresh_model->save();
 
         return new AuthSession(

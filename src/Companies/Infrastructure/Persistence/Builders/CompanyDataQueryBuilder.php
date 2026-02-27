@@ -46,7 +46,8 @@ class CompanyDataQueryBuilder
     public function selector(): Collection
     {
         return $this->buildBaseQuery()
-            ->reorder('commercial_name')
+            ->reorder()
+            ->orderByRaw('LOWER(commercial_name) ASC')
             ->get(['id', 'commercial_name']);
     }
 

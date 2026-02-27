@@ -41,8 +41,8 @@ class RefreshTokenController extends Controller
         } catch (InvalidRefreshTokenException $invalid_refresh_token_exception) {
             throw new JsonException(
                 LogLevel::WARNING,
-                __('auth::session.invalid_refresh_token_title'),
-                __('auth::session.invalid_refresh_token_description'),
+                __('auth::session.invalid_refresh_token.title'),
+                __('auth::session.invalid_refresh_token.description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
                 ErrorCodes::AUTH_UNAUTHORIZED_1003
@@ -54,8 +54,8 @@ class RefreshTokenController extends Controller
         return $this->successResponse(
             $response_data,
             [
-                'title' => __('auth::session.refresh_success_title'),
-                'description' => __('auth::session.refresh_success_description'),
+                'title' => __('auth::session.refresh_success.title'),
+                'description' => __('auth::session.refresh_success.description'),
             ],
             HttpResponse::HTTP_OK
         );

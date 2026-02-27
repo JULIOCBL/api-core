@@ -64,8 +64,8 @@ class Handler extends ExceptionHandler
             return $this->errorsMessage(
                 [
                     'status' => errorCodeException($exception->getCode()),
-                    'title' => __('auth::user_access.title'),
-                    "message" => __("auth::user_access.description")
+                    'title' => __('auth::user_access.access_denied.title'),
+                    "message" => __("auth::user_access.access_denied.description")
                 ],
                 $exception->getCode(),
                 1000,

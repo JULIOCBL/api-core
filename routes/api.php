@@ -13,7 +13,11 @@ Route::post('/auth/login', [LoginController::class, 'login']);
 Route::post('/auth/refresh', [RefreshTokenController::class, 'refresh']);
 Route::post('/auth/logout', [LogoutController::class, 'logout']);
 
-Route::post('/companies', [CreateCompanyController::class, 'createCompany']);
-Route::patch('/companies/{company_id}', [UpdateCompanyController::class, 'updateCompany']);
-Route::get('/companies', [PaginateCompaniesController::class, 'paginateCompanies']);
-Route::get('/companies/selector', [GetCompaniesSelectorController::class, 'getCompaniesSelector']);
+Route::middleware('auth.token')->group(function () {
+    Route::post('/companies', [CreateCompanyController::class, 'createCompany']);
+    Route::get('/companies', [PaginateCompaniesController::class, 'paginateCompanies']);
+    Route::get('/companies/selector', [GetCompaniesSelectorController::class, 'getCompaniesSelector']);
+    Route::middleware('auth.user_context')->group(function () {
+        Route::patch('/companies/{company_id}', [UpdateCompanyController::class, 'updateCompany']);
+    });
+});

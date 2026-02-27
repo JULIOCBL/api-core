@@ -95,8 +95,8 @@ class LoginController extends Controller
         return $this->successResponse(
             $response_data,
             [
-                'title' => __('auth::session.login_success_title'),
-                'description' => __('auth::session.login_success_description'),
+                'title' => __('auth::session.login_success.title'),
+                'description' => __('auth::session.login_success.description'),
             ],
             HttpResponse::HTTP_OK
         );

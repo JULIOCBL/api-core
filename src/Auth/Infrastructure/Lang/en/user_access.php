@@ -1,6 +1,8 @@
 <?php
 
 return [
-    'title' => 'Access denied',
-    'description' => 'You do not have permission to access this resource.',
+    'access_denied' => [
+        'title' => 'Access denied',
+        'description' => 'You do not have permission to access this resource.',
+    ],
 ];
