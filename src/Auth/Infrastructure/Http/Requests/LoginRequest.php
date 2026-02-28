@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
                     __('auth::login.invalid_header_token_ttl_hours.description'),
                     HttpResponse::HTTP_BAD_REQUEST,
                     '',
-                    ErrorCodes::AUTH_LOGIN_ERROR_1001
+                    ErrorCodes::AUTH_INVALID_TOKEN_TTL_HOURS_1016
                 );
             }
 
@@ -64,7 +64,7 @@ class LoginRequest extends FormRequest
                     __('auth::login.invalid_header_token_ttl_hours.description'),
                     HttpResponse::HTTP_BAD_REQUEST,
                     '',
-                    ErrorCodes::AUTH_LOGIN_ERROR_1001
+                    ErrorCodes::AUTH_INVALID_TOKEN_TTL_HOURS_1016
                 );
             }
         }
@@ -76,7 +76,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.missing_header_latitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR_1001
+                ErrorCodes::AUTH_MISSING_LATITUDE_HEADER_1017
             );
         }
 
@@ -87,7 +87,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.missing_header_longitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR_1001
+                ErrorCodes::AUTH_MISSING_LONGITUDE_HEADER_1018
             );
         }
 
@@ -99,7 +99,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.invalid_header_latitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR_1001
+                ErrorCodes::AUTH_INVALID_LATITUDE_HEADER_1019
             );
         }
 
@@ -111,7 +111,7 @@ class LoginRequest extends FormRequest
                 __('auth::login.invalid_header_longitude.description'),
                 HttpResponse::HTTP_BAD_REQUEST,
                 '',
-                ErrorCodes::AUTH_LOGIN_ERROR_1001
+                ErrorCodes::AUTH_INVALID_LONGITUDE_HEADER_1020
             );
         }
 

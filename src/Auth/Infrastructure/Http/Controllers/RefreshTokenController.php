@@ -45,7 +45,7 @@ class RefreshTokenController extends Controller
                 __('auth::session.invalid_refresh_token.description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
-                ErrorCodes::AUTH_UNAUTHORIZED_1003
+                ErrorCodes::AUTH_INVALID_REFRESH_TOKEN_1011
             );
         }
 

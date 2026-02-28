@@ -30,17 +30,20 @@
             "Src\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "src/Core/Infrastructure/Support/Helpers/UserFunctions.php",
+            "src/Core/Infrastructure/Support/Helpers/AuthContextFunctions.php",
+            "src/Core/Infrastructure/Support/Helpers/ExceptionHelper.php",
+            "src/Core/Infrastructure/Support/Helpers/UidHelper.php",
+            "src/Core/Infrastructure/Support/Helpers/Host.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         },
-        "files": [
-            "src/Core/Infrastructure/Support/Helpers/ExceptionHelper.php",
-            "src/Core/Infrastructure/Support/Helpers/UidHelper.php",
-            "src/Core/Infrastructure/Support/Helpers/Host.php"
-        ]
+        "files": []
     },
     "scripts": {
         "setup": [

@@ -11,15 +11,20 @@ class UserType extends Model
 {
     public const TABLE = 'user_types';
 
-    public const ROOT_1 = 1;
-    public const SUPER_USUARIO_2 = 2;
-    public const ADMINISTRATOR_3 = 3;
-    public const USER_4 = 4;
+    public const ROOT = 1;
+    public const SUPER_USUARIO = 2;
+    public const ADMINISTRATOR = 3;
+    public const USER = 4;
 
     protected $table = self::TABLE;
 
     protected $fillable = [
         'name',
         'constant',
+        'required_mail',
+    ];
+
+    protected $casts = [
+        'required_mail' => 'boolean',
     ];
 }

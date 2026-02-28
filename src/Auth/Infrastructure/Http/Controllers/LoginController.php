@@ -12,6 +12,7 @@ use Src\Auth\Infrastructure\Http\Presenters\AuthResponsePresenter;
 use Src\Auth\Infrastructure\Http\Requests\LoginRequest;
 use Src\Core\Infrastructure\Exceptions\JsonException;
 use Src\Core\Infrastructure\Http\Controllers\Controller;
+use Src\Core\Infrastructure\Support\Helpers\PlatformTypeHelper;
 use Src\Shared\Infrastructure\Errors\ErrorCodes;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -45,7 +46,7 @@ class LoginController extends Controller
             : null;
         $latitude = (float) $login_request->header('X-Latitude');
         $longitude = (float) $login_request->header('X-Longitude');
-        $name_platform_type = $this->resolvePlatformName($platform_type);
+        $name_platform_type = PlatformTypeHelper::toName($platform_type);
         $device_type = (string) $platform_type;
 
         $login_input = LoginInput::fromArray(
@@ -102,18 +103,4 @@ class LoginController extends Controller
         );
     }
 
-    /**
-     * @param int $platform_type
-     * @return string
-     */
-    private function resolvePlatformName(int $platform_type): string
-    {
-        return match ($platform_type) {
-            1 => 'web',
-            2 => 'mobile',
-            3 => 'desktop',
-            4 => 'integration',
-            default => 'unknown',
-        };
-    }
 }

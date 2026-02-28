@@ -4,7 +4,7 @@
 namespace Src\Core\Infrastructure\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Src\Auth\Infrastructure\Http\Middleware\ResolveAuthUserContextMiddleware;
+use Src\Auth\Infrastructure\Http\Middleware\RequireRootCompanyIdMiddleware;
 use Src\Auth\Infrastructure\Http\Middleware\VerifyAccessTokenMiddleware;
 use Src\Core\Infrastructure\Http\Middleware\LanguageMiddleware;
 use Src\Core\Infrastructure\Http\Middleware\TrimStrings;
@@ -70,8 +70,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // Valida access token JWT y adjunta contexto de sesión al request.
         'auth.token' => VerifyAccessTokenMiddleware::class,
-        // Resuelve usuario autenticado y contexto de compañía activa.
-        'auth.user_context' => ResolveAuthUserContextMiddleware::class,
+        // Exige company_id cuando el usuario autenticado es ROOT.
+        'auth.root_company_id' => RequireRootCompanyIdMiddleware::class,
 
     ];
 }

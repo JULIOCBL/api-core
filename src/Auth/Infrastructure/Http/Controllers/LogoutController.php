@@ -45,7 +45,7 @@ class LogoutController extends Controller
                 __('auth::session.missing_access_token.description'),
                 HttpResponse::HTTP_UNPROCESSABLE_ENTITY,
                 '',
-                ErrorCodes::AUTH_UNAUTHORIZED_1003
+                ErrorCodes::AUTH_MISSING_ACCESS_TOKEN_1009
             );
         }
 
@@ -59,7 +59,7 @@ class LogoutController extends Controller
                 __('auth::session.invalid_access_token.description'),
                 HttpResponse::HTTP_UNAUTHORIZED,
                 '',
-                ErrorCodes::AUTH_UNAUTHORIZED_1003
+                ErrorCodes::AUTH_INVALID_ACCESS_TOKEN_1010
             );
         }
 

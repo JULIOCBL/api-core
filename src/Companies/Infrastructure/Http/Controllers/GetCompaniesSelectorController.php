@@ -27,6 +27,7 @@ class GetCompaniesSelectorController extends Controller
      */
     public function getCompaniesSelector(): Response
     {
+
         $selector_companies = $this->get_companies_selector_use_case->execute();
         $response_data = $this->company_response_presenter->presentSelector($selector_companies);
 
