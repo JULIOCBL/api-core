@@ -68,5 +68,7 @@ final class ErrorCodes
 
     // GENERAL
     public const GENERAL_UNKNOWN_9000 = 9000;
+    // Request malformado o inválido a nivel general (HTTP 400).
+    public const GENERAL_BAD_REQUEST_9001 = 9001;
 
 }

@@ -139,3 +139,45 @@ if (!function_exists('company')) {
         return $company_context_builder->build();
     }
 }
+
+if (!function_exists('permissions')) {
+    /**
+     * Obtiene los permisos del contexto autenticado actual.
+     *
+     * @return array<int, string>
+     */
+    function permissions(): array
+    {
+        $permissions = request()->attributes->get('auth_permissions');
+
+        if (!is_array($permissions)) {
+            return [];
+        }
+
+        $normalized_permissions = [];
+        foreach ($permissions as $permission_key) {
+            if (is_string($permission_key) && $permission_key !== '') {
+                $normalized_permissions[] = $permission_key;
+            }
+        }
+
+        return $normalized_permissions;
+    }
+}
+
+if (!function_exists('hasPermission')) {
+    /**
+     * Verifica si una key/constante existe en los permisos del usuario autenticado.
+     *
+     * @param string $permission_key
+     * @return bool
+     */
+    function hasPermission(string $permission_key): bool
+    {
+        if ($permission_key === '') {
+            return false;
+        }
+
+        return in_array($permission_key, permissions(), true);
+    }
+}

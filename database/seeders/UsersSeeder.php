@@ -32,7 +32,7 @@ class UsersSeeder extends Seeder
                 ]
             );
 
-            User::query()->update(['password' => Crypt::encrypt('gf' . date('Y'))]);
+            User::query()->update(['password' => Crypt::encrypt('secret123')]);
         } else {
 
             User::firstOrCreate(

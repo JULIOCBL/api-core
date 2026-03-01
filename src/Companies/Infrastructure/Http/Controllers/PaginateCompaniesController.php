@@ -39,6 +39,6 @@ class PaginateCompaniesController extends Controller
         $paginated_companies = $this->paginate_companies_use_case->execute($page, $per_page, $filters);
         $response_data = $this->company_response_presenter->presentPaginated($paginated_companies);
 
-        return response($response_data, HttpResponse::HTTP_OK)->header('Content-Type', 'application/json');
+        return $this->successResponse($response_data);
     }
 }
