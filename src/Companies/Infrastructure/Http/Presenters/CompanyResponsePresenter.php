@@ -5,7 +5,6 @@ namespace Src\Companies\Infrastructure\Http\Presenters;
 use Src\Companies\Domain\Entities\Company;
 use Src\Companies\Domain\Entities\CompanySelectorItem;
 use Src\Companies\Domain\ValueObjects\CompanySelectorCollection;
-use Src\Companies\Domain\ValueObjects\PaginatedCompanies;
 
 /**
  * Presenter para convertir objetos de dominio de compañías
@@ -32,48 +31,6 @@ class CompanyResponsePresenter
             'tertiary_color' => $company->getTertiaryColor(),
             'image_logo' => $company->getImageLogo(),
             'status' => $company->getStatus(),
-        ];
-    }
-
-    /**
-     * @param PaginatedCompanies $paginated_companies
-     * @return array<string, mixed>
-     */
-    public function presentPaginated(PaginatedCompanies $paginated_companies): array
-    {
-        $items = [];
-
-        foreach ($paginated_companies->getCompanies() as $company) {
-            $items[] = $this->present($company);
-        }
-
-        $meta_links = [];
-        for ($page = 1; $page <= $paginated_companies->getLastPage(); $page++) {
-            $meta_links[] = [
-                'url' => $paginated_companies->getPath() . '?page=' . $page,
-                'label' => (string) $page,
-                'active' => $page === $paginated_companies->getCurrentPage(),
-            ];
-        }
-
-        return [
-            'data' => $items,
-            'links' => [
-                'first' => $paginated_companies->getFirstPageUrl(),
-                'last' => $paginated_companies->getLastPageUrl(),
-                'prev' => $paginated_companies->getPrevPageUrl(),
-                'next' => $paginated_companies->getNextPageUrl(),
-            ],
-            'meta' => [
-                'current_page' => $paginated_companies->getCurrentPage(),
-                'from' => $paginated_companies->getFrom(),
-                'last_page' => $paginated_companies->getLastPage(),
-                'links' => $meta_links,
-                'path' => $paginated_companies->getPath(),
-                'per_page' => $paginated_companies->getPerPage(),
-                'to' => $paginated_companies->getTo(),
-                'total' => $paginated_companies->getTotal(),
-            ],
         ];
     }
 

@@ -5,6 +5,7 @@ namespace Src\Companies\Infrastructure\Persistence\Builders;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Src\Shared\Infrastructure\Persistence\Builders\BaseQueryBuilder;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Company as CompanyModel;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Traits\AppliesQueryFilters;
 
@@ -12,7 +13,7 @@ use Src\Shared\Infrastructure\Persistence\Eloquent\Traits\AppliesQueryFilters;
  * Builder de consulta para compañías.
  * Centraliza la base de query y variantes de salida (paginado y selector).
  */
-class CompanyDataQueryBuilder
+class CompanyDataQueryBuilder extends BaseQueryBuilder
 {
     use AppliesQueryFilters;
 
@@ -30,12 +31,7 @@ class CompanyDataQueryBuilder
         $this->applyFilters($query, $filters);
         $this->applySorting($query, $filters);
 
-        if ($per_page === -1) {
-            $total = (int) (clone $query)->count();
-            $per_page = $total > 0 ? $total : 1;
-        }
-
-        return $query->paginate($per_page, ['*'], 'page', $page);
+        return $this->toPaginate($query, $page, $per_page);
     }
 
     /**
@@ -45,10 +41,11 @@ class CompanyDataQueryBuilder
      */
     public function selector(): Collection
     {
-        return $this->buildBaseQuery()
+        $query = $this->buildBaseQuery()
             ->reorder()
-            ->orderByRaw('LOWER(commercial_name) ASC')
-            ->get(['id', 'commercial_name']);
+            ->orderByRaw('LOWER(commercial_name) ASC');
+
+        return $this->toList($query->select(['id', 'commercial_name']));
     }
 
     /**

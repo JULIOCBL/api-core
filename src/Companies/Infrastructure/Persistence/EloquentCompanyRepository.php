@@ -2,6 +2,7 @@
 
 namespace Src\Companies\Infrastructure\Persistence;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Src\Companies\Domain\Contracts\CompanyRepositoryInterface;
 use Src\Companies\Domain\Entities\Company;
 use Src\Companies\Domain\Entities\CompanySelectorItem;
@@ -9,7 +10,6 @@ use Src\Companies\Domain\Exceptions\CompanyNotFoundException;
 use Src\Companies\Domain\ValueObjects\CompanySelectorCollection;
 use Src\Companies\Domain\ValueObjects\CompanyDraft;
 use Src\Companies\Domain\ValueObjects\CompanyUpdate;
-use Src\Companies\Domain\ValueObjects\PaginatedCompanies;
 use Src\Companies\Infrastructure\Persistence\Builders\CompanyDataQueryBuilder;
 use Src\Shared\Infrastructure\Persistence\Eloquent\Models\Company as CompanyModel;
 
@@ -117,32 +117,11 @@ class EloquentCompanyRepository implements CompanyRepositoryInterface
      * @param int $page
      * @param int $per_page
      * @param array<string, mixed> $filters
-     * @return PaginatedCompanies
+     * @return LengthAwarePaginator
      */
-    public function paginate(int $page, int $per_page, array $filters): PaginatedCompanies
+    public function paginate(int $page, int $per_page, array $filters): LengthAwarePaginator
     {
-        $paginator = $this->company_data_query_builder->paginate($filters, $page, $per_page);
-
-        $companies = [];
-
-        foreach ($paginator->items() as $company_model) {
-            $companies[] = $this->toDomainCompany($company_model);
-        }
-
-        return new PaginatedCompanies(
-            companies: $companies,
-            total: (int) $paginator->total(),
-            per_page: (int) $paginator->perPage(),
-            current_page: (int) $paginator->currentPage(),
-            last_page: (int) $paginator->lastPage(),
-            from: $paginator->firstItem(),
-            to: $paginator->lastItem(),
-            path: $paginator->path(),
-            first_page_url: $paginator->url(1),
-            last_page_url: $paginator->url($paginator->lastPage()),
-            next_page_url: $paginator->nextPageUrl(),
-            prev_page_url: $paginator->previousPageUrl()
-        );
+        return $this->company_data_query_builder->paginate($filters, $page, $per_page);
     }
 
     /**

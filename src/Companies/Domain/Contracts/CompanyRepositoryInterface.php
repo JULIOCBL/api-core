@@ -2,11 +2,11 @@
 
 namespace Src\Companies\Domain\Contracts;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Src\Companies\Domain\Entities\Company;
 use Src\Companies\Domain\ValueObjects\CompanyDraft;
 use Src\Companies\Domain\ValueObjects\CompanySelectorCollection;
 use Src\Companies\Domain\ValueObjects\CompanyUpdate;
-use Src\Companies\Domain\ValueObjects\PaginatedCompanies;
 
 /**
  * Puerto de salida para persistencia y consulta de compañías.
@@ -30,9 +30,9 @@ interface CompanyRepositoryInterface
      * @param int $page
      * @param int $per_page
      * @param array<string, mixed> $filters
-     * @return PaginatedCompanies
+     * @return LengthAwarePaginator
      */
-    public function paginate(int $page, int $per_page, array $filters): PaginatedCompanies;
+    public function paginate(int $page, int $per_page, array $filters): LengthAwarePaginator;
 
     /**
      * @return CompanySelectorCollection

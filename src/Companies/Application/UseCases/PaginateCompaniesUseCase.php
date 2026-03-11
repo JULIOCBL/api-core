@@ -2,8 +2,8 @@
 
 namespace Src\Companies\Application\UseCases;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Src\Companies\Domain\Contracts\CompanyRepositoryInterface;
-use Src\Companies\Domain\ValueObjects\PaginatedCompanies;
 
 /**
  * Caso de uso para listar compañías paginadas.
@@ -21,9 +21,9 @@ class PaginateCompaniesUseCase
      * @param int $page
      * @param int $per_page
      * @param array<string, mixed> $filters
-     * @return PaginatedCompanies
+     * @return LengthAwarePaginator
      */
-    public function execute(int $page, int $per_page, array $filters): PaginatedCompanies
+    public function execute(int $page, int $per_page, array $filters): LengthAwarePaginator
     {
         return $this->company_repository->paginate($page, $per_page, $filters);
     }
