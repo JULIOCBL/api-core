@@ -45,7 +45,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:api',
+            // Limita la API a 300 requests por minuto por cliente.
+            'throttle:300,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class
         ],
     ];
